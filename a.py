@@ -51,10 +51,8 @@ def simulate_dpll(delay, steps=1000):
 def simulate_cdr(jitter_amp, steps=1000):
     data = np.random.choice([0, 1], steps)
     clock = (np.sin(np.linspace(0, 50, steps)) > 0).astype(int)
-
     jitter = jitter_amp * np.random.randn(steps)
     recovered = (np.sin(np.linspace(0, 50, steps) + jitter) > 0).astype(int)
-
     return data, clock, recovered
 
 
@@ -112,17 +110,19 @@ st.pyplot(fig2)
 
 
 # --------------------------------------------------------------
-# CDR Simulation
+# CDR Simulation  (FIXED)
 # --------------------------------------------------------------
 
 st.subheader("📌 Clock and Data Recovery (CDR) Simulation")
 
 data, clk, recovered = simulate_cdr(jitter_amp)
 
+x = np.arange(200)       # <-- FIXED (Explicit x-axis)
+
 fig3, ax3 = plt.subplots(1, 1, figsize=(10, 3))
-ax3.step(data[:200], label="Data")
-ax3.step(clk[:200], label="Clock")
-ax3.step(recovered[:200], label="Recovered Clock")
+ax3.step(x, data[:200], label="Data")
+ax3.step(x, clk[:200], label="Clock")
+ax3.step(x, recovered[:200], label="Recovered Clock")
 ax3.legend()
 
 st.pyplot(fig3)
